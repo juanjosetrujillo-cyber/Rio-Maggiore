@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <title>Rio Maggiore — Residencial Club · Armenia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+
+  <style>
+    :root {
+      --green-deep:  #0d1a0d;
+      --green-mid:   #162616;
+      --gold:        #c9a96e;
+      --gold-light:  #e2c99a;
+      --ivory:       #f5f0e6;
+      --serif:       'Cormorant Garamond', Georgia, serif;
+      --sans:        'Raleway', sans-serif;
+      --ease:        cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body {
+      font-family: var(--sans);
+      background: var(--green-deep);
+      color: var(--ivory);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; -webkit-tap-highlight-color: transparent; }
+    img { display: block; max-width: 100%; }
+
+    /* ── HEADER ──────────────────────────── */
+    .header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.4s var(--ease);
+    }
+    .header.scrolled {
+      background: rgba(10,18,10,0.96);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(201,169,110,0.1);
+    }
+    .header-logo svg { height: 36px; width: auto; }
+
+    .menu-btn {
+      background: none;
+      border: 1px solid rgba(201,169,110,0.25);
+      padding: 8px 10px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      border-radius: 2px;
+    }
+    .menu-btn span {
+      display: block;
+      width: 22px;
+      height: 1.5px;
+      background: var(--gold-light);
+      transition: transform 0.3s, opacity 0.3s;
+    }
+    .menu-btn.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .menu-btn.open span:nth-child(2) { opacity: 0; }
+    .menu-btn.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    /* Full-screen nav */
+    .nav-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(8,15,8,0.98);
+      z-index: 99;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s var(--ease);
+    }
+    .nav-overlay.open { opacity: 1; pointer-events: all; }
+    .nav-overlay a {
+      font-family: var(--sans);
+      font-size: 1.1rem;
+      font-weight: 300;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.75);
+      padding: 18px 40px;
+      width: 100%;
+      text-align: center;
+      border-bottom: 1px solid rgba(201,169,110,0.06);
+      transition: color 0.2s, background 0.2s;
+    }
+    .nav-overlay a:first-child { border-top: 1px solid rgba(201,169,110,0.06); }
+    .nav-overlay a:active { background: rgba(201,169,110,0.06); color: var(--gold-light); }
+    .nav-overlay .nav-cta {
+      margin-top: 28px;
+      background: var(--gold);
+      color: var(--green-deep);
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      border: none;
+      width: auto;
+      padding: 16px 48px;
+    }
+
+    /* ── HERO ────────────────────────────── */
+    .hero {
+      position: relative;
+      height: 100svh;
+      min-height: 600px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      padding: 80px 24px 80px;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(175deg, #060f06 0%, #0d1f10 35%, #142614 65%, #0a150a 100%);
+    }
+    .hero-bg::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 45%;
+      background:
+        radial-gradient(ellipse 160% 60% at 30% 110%, #0f2a0f 0%, transparent 60%),
+        radial-gradient(ellipse 120% 50% at 70% 115%, #112211 0%, transparent 55%);
+    }
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      bottom: 5%; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(201,169,110,0.2), transparent);
+    }
+    .hero-foliage {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 28%;
+      background: linear-gradient(to top, #060e06 0%, #0a160a 40%, transparent 100%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      width: 100%;
+    }
+    .hero-overline {
+      font-family: var(--sans);
+      font-size: 0.58rem;
+      font-weight: 400;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeUp 0.9s ease 0.3s forwards;
+    }
+    .hero-title {
+      font-family: var(--serif);
+      font-size: clamp(3.8rem, 18vw, 5.5rem);
+      font-weight: 300;
+      line-height: 0.92;
+      color: #fff;
+      opacity: 0;
+      transform: translateY(16px);
+      animation: fadeUp 1s ease 0.5s forwards;
+    }
+    .hero-title em { font-style: italic; color: var(--gold-light); }
+    .hero-rule {
+      width: 48px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      margin: 22px auto;
+      opacity: 0;
+      animation: fadeIn 0.8s ease 0.9s forwards;
+    }
+    .hero-tagline {
+      font-family: var(--serif);
+      font-size: 1.05rem;
+      font-style: italic;
+      font-weight: 300;
+      color: rgba(255,255,255,0.82);
+      opacity: 0;
+      animation: fadeUp 0.9s ease 1.1s forwards;
+    }
+    .hero-btns {
+      margin-top: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: center;
+      opacity: 0;
+      animation: fadeUp 0.9s ease 1.3s forwards;
+    }
+    .btn-gold {
+      display: block;
+      width: 100%;
+      max-width: 300px;
+      text-align: center;
+      font-family: var(--sans);
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      padding: 16px 24px;
+      background: var(--gold);
+      color: var(--green-deep);
+      border: 1px solid var(--gold);
+    }
+    .btn-outline {
+      display: block;
+      width: 100%;
+      max-width: 300px;
+      text-align: center;
+      font-family: var(--sans);
+      font-size: 0.65rem;
+      font-weight: 400;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      padding: 16px 24px;
+      background: transparent;
+      color: rgba(255,255,255,0.78);
+      border: 1px solid rgba(255,255,255,0.22);
+    }
+    .scroll-hint {
+      position: absolute;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      opacity: 0;
+      animation: fadeIn 0.8s ease 1.8s forwards;
+    }
+    .scroll-hint span {
+      font-family: var(--sans);
+      font-size: 0.48rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+    }
+    .scroll-hint-line {
+      width: 1px;
+      height: 36px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    /* ── SHARED SECTION STYLES ───────────── */
+    .section { padding: 72px 20px; }
+
+    .label {
+      font-family: var(--sans);
+      font-size: 0.58rem;
+      font-weight: 400;
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+    .label::before {
+      content: '';
+      width: 26px; height: 1px;
+      background: var(--gold);
+      flex-shrink: 0;
+    }
+    .h2 {
+      font-family: var(--serif);
+      font-size: clamp(2.4rem, 10vw, 3.2rem);
+      font-weight: 300;
+      line-height: 1.1;
+      color: #fff;
+    }
+    .h2 em { font-style: italic; color: var(--gold-light); }
+    .divider {
+      width: 44px; height: 1px;
+      background: linear-gradient(90deg, var(--gold), transparent);
+      margin: 22px 0;
+    }
+    .body-text {
+      font-family: var(--sans);
+      font-size: 1.0rem;
+      font-weight: 300;
+      line-height: 1.85;
+      color: rgba(255,255,255,0.88);
+    }
+
+    /* Reveal animation */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.75s ease, transform 0.75s ease; }
+    .reveal.in { opacity: 1; transform: none; }
+    .d1 { transition-delay: 0.1s; }
+    .d2 { transition-delay: 0.2s; }
+    .d3 { transition-delay: 0.3s; }
+    .d4 { transition-delay: 0.4s; }
+
+    /* ── EL PROYECTO ─────────────────────── */
+    .proyecto { background: var(--green-deep); }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: rgba(201,169,110,0.08);
+      border: 1px solid rgba(201,169,110,0.08);
+      margin-top: 32px;
+    }
+    .stat { background: var(--green-deep); padding: 24px 18px; }
+    .stat-n {
+      font-family: var(--serif);
+      font-size: 2.4rem;
+      font-weight: 300;
+      color: var(--gold-light);
+      line-height: 1;
+    }
+    .stat-l {
+      font-family: var(--sans);
+      font-size: 0.58rem;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      margin-top: 6px;
+    }
+
+    /* ── PRODUCTOS ───────────────────────── */
+    .productos { background: #0a1a0a; border-top: 1px solid rgba(201,169,110,0.06); }
+    .productos-header { text-align: center; margin-bottom: 40px; }
+    .productos-header .label { justify-content: center; }
+    .productos-header .label::before { display: none; }
+    .productos-header .divider { margin: 22px auto; }
+
+    .product-list { display: flex; flex-direction: column; gap: 1px; }
+    .product-item {
+      background: #0d1a0d;
+      padding: 28px 22px;
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+      border-left: 2px solid transparent;
+      transition: border-color 0.3s, background 0.3s;
+      position: relative;
+    }
+    .product-item:active { background: #111f11; border-left-color: var(--gold); }
+    .product-num {
+      font-family: var(--serif);
+      font-size: 1.6rem;
+      font-weight: 300;
+      color: rgba(201,169,110,0.2);
+      line-height: 1;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .product-info {}
+    .product-name {
+      font-family: var(--serif);
+      font-size: 1.35rem;
+      font-weight: 400;
+      color: #fff;
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+    .product-desc {
+      font-family: var(--sans);
+      font-size: 0.9rem;
+      font-weight: 300;
+      line-height: 1.75;
+      color: rgba(255,255,255,0.82);
+    }
+
+    /* ── UBICACIÓN ───────────────────────── */
+    .ubicacion { background: var(--green-deep); border-top: 1px solid rgba(201,169,110,0.06); }
+    .map-wrap {
+      margin-top: 32px;
+      position: relative;
+      border: 1px solid rgba(201,169,110,0.12);
+      overflow: hidden;
+    }
+    .map-wrap iframe {
+      width: 100%;
+      height: 260px;
+      border: none;
+      display: block;
+    }
+    .map-label-bar {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 10px 14px;
+      background: linear-gradient(to top, rgba(13,26,13,0.92), transparent);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      pointer-events: none;
+    }
+    .map-dot {
+      width: 7px; height: 7px;
+      background: var(--gold);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .map-text {
+      font-family: var(--sans);
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold-light);
+    }
+    .location-list { margin-top: 24px; }
+    .location-item {
+      display: flex;
+      gap: 14px;
+      padding: 18px 0;
+      border-bottom: 1px solid rgba(201,169,110,0.08);
+    }
+    .location-item:first-child { border-top: 1px solid rgba(201,169,110,0.08); }
+    .loc-dot {
+      width: 6px; height: 6px;
+      background: var(--gold);
+      border-radius: 50%;
+      margin-top: 7px;
+      flex-shrink: 0;
+    }
+    .loc-title {
+      font-family: var(--sans);
+      font-size: 0.58rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 5px;
+    }
+    .loc-text {
+      font-family: var(--sans);
+      font-size: 0.92rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.65;
+    }
+
+    /* ── ALIANZAS ────────────────────────── */
+    .alianzas { background: #f5f0e6; border-top: 1px solid rgba(201,169,110,0.15); }
+    .alianzas .label { color: #4a7a5a; }
+    .alianzas .label::before { background: #4a7a5a; }
+    .alianzas .h2 { color: #1a2a1a; }
+    .alianzas .h2 em { color: #3a6e3a; }
+    .alianzas .divider { background: linear-gradient(90deg, #3a6e3a, transparent); }
+    .alianzas .body-text { color: rgba(40,60,40,0.7); }
+
+    .alianza-cards { display: flex; flex-direction: column; gap: 2px; margin-top: 32px; }
+    .alianza-card {
+      background: #fff;
+      border: 1px solid rgba(0,0,0,0.06);
+      padding: 36px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+    .alianza-logo { display: flex; align-items: center; justify-content: center; width: 100%; height: 64px; }
+    .alianza-logo svg { max-height: 64px; max-width: 240px; width: 100%; height: auto; }
+    .alianza-role {
+      font-family: var(--sans);
+      font-size: 0.56rem;
+      font-weight: 500;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(60,80,60,0.4);
+      border-top: 1px solid rgba(0,0,0,0.06);
+      padding-top: 16px;
+      width: 100%;
+      text-align: center;
+    }
+
+    /* ── CONTACTO ────────────────────────── */
+    .contacto { background: linear-gradient(180deg, var(--green-deep) 0%, #060f06 100%); border-top: 1px solid rgba(201,169,110,0.06); }
+
+    .contact-items { display: flex; flex-direction: column; gap: 2px; margin-top: 28px; }
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 16px;
+      background: rgba(201,169,110,0.03);
+      border: 1px solid rgba(201,169,110,0.07);
+    }
+    .contact-icon {
+      width: 38px; height: 38px;
+      border: 1px solid rgba(201,169,110,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .contact-icon svg { width: 16px; height: 16px; fill: var(--gold); }
+    .c-label {
+      font-family: var(--sans);
+      font-size: 0.55rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 3px;
+    }
+    .c-value {
+      font-family: var(--serif);
+      font-size: 1.05rem;
+      color: #fff;
+    }
+    .c-value.whatsapp { color: #25D366; }
+
+    .showroom {
+      margin-top: 24px;
+      padding: 24px 20px;
+      border: 1px solid rgba(201,169,110,0.1);
+      background: rgba(201,169,110,0.02);
+      position: relative;
+    }
+    .showroom::before {
+      content: 'SHOWROOM';
+      position: absolute;
+      top: -8px; left: 18px;
+      font-family: var(--sans);
+      font-size: 0.5rem;
+      letter-spacing: 0.3em;
+      color: var(--gold);
+      background: #060f06;
+      padding: 0 8px;
+    }
+    .showroom p {
+      font-family: var(--sans);
+      font-size: 0.92rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.75;
+    }
+    .hours {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 16px;
+    }
+    .hour-tag {
+      font-family: var(--sans);
+      font-size: 0.6rem;
+      letter-spacing: 0.14em;
+      color: rgba(255,255,255,0.4);
+      border: 1px solid rgba(201,169,110,0.12);
+      padding: 9px 14px;
+    }
+
+    /* ── FOOTER ──────────────────────────── */
+    .footer {
+      background: #060e06;
+      padding: 40px 20px;
+      border-top: 1px solid rgba(201,169,110,0.08);
+      text-align: center;
+    }
+    .footer-logo {
+      font-family: var(--serif);
+      font-size: 1.3rem;
+      color: var(--gold);
+      letter-spacing: 0.12em;
+    }
+    .footer-sub {
+      font-family: var(--sans);
+      font-size: 0.52rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: rgba(201,169,110,0.4);
+      margin-top: 6px;
+    }
+    .footer-socials {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-top: 28px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(201,169,110,0.06);
+    }
+    .footer-social {
+      font-family: var(--sans);
+      font-size: 0.58rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      padding: 8px 0;
+    }
+    .footer-copy {
+      font-family: var(--sans);
+      font-size: 0.55rem;
+      letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.15);
+      margin-top: 20px;
+    }
+
+    /* ── WHATSAPP ────────────────────────── */
+    .wa-btn {
+      position: fixed;
+      bottom: 20px; right: 20px;
+      z-index: 200;
+      width: 52px; height: 52px;
+      background: #25D366;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 16px rgba(37,211,102,0.35);
+    }
+    .wa-btn svg { width: 24px; height: 24px; fill: #fff; }
+
+    /* ── ANIMATIONS ──────────────────────── */
+    @keyframes fadeUp { to { opacity: 1; transform: none; } }
+    @keyframes fadeIn { to { opacity: 1; } }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.5; transform: scaleY(1); }
+      50% { opacity: 1; transform: scaleY(1.15); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header" id="header">
+    <a href="#inicio" aria-label="Rio Maggiore">
+      <svg class="header-logo" viewBox="0 0 240 58" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8,16 C34,4 66,26 100,14 C134,2 168,22 200,12 C210,9 218,11 228,14"
+              stroke="#7abf8a" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+        <path d="M8,26 C34,14 66,36 100,24 C134,12 168,32 200,22 C210,19 218,21 228,24"
+              stroke="#3d8f52" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+        <text x="118" y="43" text-anchor="middle" font-family="Raleway,sans-serif"
+              font-size="15" font-weight="700" letter-spacing="4.5" fill="#ffffff">RIO MAGGIORE</text>
+        <text x="118" y="55" text-anchor="middle" font-family="Raleway,sans-serif"
+              font-size="6.5" font-weight="400" letter-spacing="5.5" fill="rgba(255,255,255,0.6)">RESIDENCIAL CLUB</text>
+      </svg>
+    </a>
+    <button class="menu-btn" id="menuBtn" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <!-- NAV OVERLAY -->
+  <nav class="nav-overlay" id="navOverlay">
+    <a href="#proyecto" onclick="closeNav()">El Proyecto</a>
+    <a href="#productos" onclick="closeNav()">Productos</a>
+    <a href="#ubicacion" onclick="closeNav()">Ubicación</a>
+    <a href="#alianzas" onclick="closeNav()">Alianzas</a>
+    <a href="#contacto" class="nav-cta" onclick="closeNav()">Contáctenos</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="inicio">
+    <div class="hero-bg"></div>
+    <div class="hero-foliage"></div>
+    <div class="hero-content">
+      <p class="hero-overline">Armenia · Quindío · Colombia</p>
+      <h1 class="hero-title">Rio<br/><em>Maggiore</em></h1>
+      <div class="hero-rule"></div>
+      <p class="hero-tagline">Donde el lujo encuentra la naturaleza</p>
+      <div class="hero-btns">
+        <a href="#productos" class="btn-gold">Descubrir el Proyecto</a>
+        <a href="#contacto" class="btn-outline">Agendar Visita</a>
+      </div>
+    </div>
+    <div class="scroll-hint" onclick="document.getElementById('proyecto').scrollIntoView({behavior:'smooth'})">
+      <span>Explorar</span>
+      <div class="scroll-hint-line"></div>
+    </div>
+  </section>
+
+  <!-- EL PROYECTO -->
+  <section class="proyecto section" id="proyecto">
+    <p class="label reveal">Sobre Nosotros</p>
+    <h2 class="h2 reveal d1">Un destino<br/><em>excepcional</em></h2>
+    <div class="divider reveal d2"></div>
+    <p class="body-text reveal d2">Rio Maggiore es un desarrollo inmobiliario de uso mixto concebido para quienes exigen lo mejor. Ubicado en el corazón del Eje Cafetero, ofrece una experiencia de vida sin precedentes donde la arquitectura de lujo dialoga con los paisajes naturales del Quindío.</p>
+    <p class="body-text reveal d3" style="margin-top:16px;">Un ecosistema completo que integra residencias exclusivas, villas turísticas, espacios comerciales y de entretenimiento, todo bajo los más altos estándares internacionales.</p>
+    <div class="stats-grid reveal d3">
+      <div class="stat"><div class="stat-n">6</div><div class="stat-l">Tipos de Producto</div></div>
+      <div class="stat"><div class="stat-n">Km 7</div><div class="stat-l">Vía La Tebaida</div></div>
+      <div class="stat"><div class="stat-n">5</div><div class="stat-l">Min al Aeropuerto</div></div>
+      <div class="stat"><div class="stat-n">100%</div><div class="stat-l">All Inclusive</div></div>
+    </div>
+    <div style="margin-top:32px;" class="reveal d4">
+      <a href="#contacto" class="btn-gold" style="max-width:none;display:block;text-align:center;">Solicitar Información</a>
+    </div>
+  </section>
+
+  <!-- PRODUCTOS -->
+  <section class="productos section" id="productos">
+    <div class="productos-header">
+      <p class="label reveal">Portafolio Inmobiliario</p>
+      <h2 class="h2 reveal d1">Nuestros<br/><em>Productos</em></h2>
+      <div class="divider reveal d2"></div>
+    </div>
+    <div class="product-list">
+      <div class="product-item reveal">
+        <div class="product-num">01</div>
+        <div class="product-info">
+          <div class="product-name">Casas Campestres</div>
+          <p class="product-desc">Residencias privadas que integran arquitectura contemporánea con el entorno natural. Espacios amplios, jardines exclusivos y los más altos estándares de confort.</p>
+        </div>
+      </div>
+      <div class="product-item reveal d1">
+        <div class="product-num">02</div>
+        <div class="product-info">
+          <div class="product-name">Villas Turísticas de Lujo</div>
+          <p class="product-desc">Propiedades de inversión turística con retorno garantizado. Diseñadas para brindar una experiencia de hospedaje cinco estrellas en el corazón del Quindío.</p>
+        </div>
+      </div>
+      <div class="product-item reveal d2">
+        <div class="product-num">03</div>
+        <div class="product-info">
+          <div class="product-name">Townhouse</div>
+          <p class="product-desc">Unidades adosadas de diseño exclusivo que combinan la privacidad de una casa con los beneficios de una comunidad cerrada y servicios compartidos de alto nivel.</p>
+        </div>
+      </div>
+      <div class="product-item reveal d3">
+        <div class="product-num">04</div>
+        <div class="product-info">
+          <div class="product-name">Plaza Riviera</div>
+          <p class="product-desc">Un espacio de confluencia social y comercial de primer nivel. Gastronomía selecta, boutiques y servicios premium en un ambiente diseñado para el encuentro.</p>
+        </div>
+      </div>
+      <div class="product-item reveal d4">
+        <div class="product-num">05</div>
+        <div class="product-info">
+          <div class="product-name">Riviera Mall</div>
+          <p class="product-desc">Centro comercial de nueva generación con marcas nacionales e internacionales. Entretenimiento, moda y servicios en un solo espacio de diseño arquitectónico distinguido.</p>
+        </div>
+      </div>
+      <div class="product-item reveal">
+        <div class="product-num">06</div>
+        <div class="product-info">
+          <div class="product-name">Plaza Boulevar</div>
+          <p class="product-desc">Locales comerciales de alta visibilidad en el bulevar principal del proyecto. Una oportunidad de inversión estratégica en el nuevo polo de desarrollo del Quindío.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- UBICACIÓN -->
+  <section class="ubicacion section" id="ubicacion">
+    <p class="label reveal">Localización</p>
+    <h2 class="h2 reveal d1">Ubicación<br/><em>Privilegiada</em></h2>
+    <div class="divider reveal d2"></div>
+    <div class="map-wrap reveal d2">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3975.234!2d-75.7753497!3d4.467184!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e38596c63fe12a9%3A0x5194251ce9bfa2d2!2sRio%20Maggiore%2C%20La%20Tebaida-Armenia%20%23Km%207%2C%20El%20Eden%2C%20Armenia%2C%20Quind%C3%ADo!5e0!3m2!1ses!2sco!4v1713600000000!5m2!1ses!2sco"
+        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+        title="Ubicación Rio Maggiore">
+      </iframe>
+      <div class="map-label-bar">
+        <div class="map-dot"></div>
+        <span class="map-text">Km 7 · Vía La Tebaida · Armenia</span>
+      </div>
+    </div>
+    <div class="location-list reveal d3">
+      <div class="location-item">
+        <div class="loc-dot"></div>
+        <div>
+          <div class="loc-title">Dirección</div>
+          <div class="loc-text">Km 7 Vía La Tebaida<br/>Armenia, Quindío, Colombia</div>
+        </div>
+      </div>
+      <div class="location-item">
+        <div class="loc-dot"></div>
+        <div>
+          <div class="loc-title">Aeropuerto Internacional El Edén</div>
+          <div class="loc-text">A tan solo 5 minutos — vuelos nacionales e internacionales.</div>
+        </div>
+      </div>
+      <div class="location-item">
+        <div class="loc-dot"></div>
+        <div>
+          <div class="loc-title">Conectividad Regional</div>
+          <div class="loc-text">Acceso rápido a Pereira, Manizales e Ibagué. Corazón del Triángulo del Café.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ALIANZAS -->
+  <section class="alianzas section" id="alianzas">
+    <p class="label reveal">Respaldo y Confianza</p>
+    <h2 class="h2 reveal d1">Nuestras<br/><em>Alianzas</em></h2>
+    <div class="divider reveal d2"></div>
+    <p class="body-text reveal d2">Rio Maggiore cuenta con el respaldo de aliados estratégicos líderes en sus sectores, garantizando los más altos estándares de diseño y seguridad jurídica.</p>
+    <div class="alianza-cards">
+      <!-- Didier Rincon -->
+      <div class="alianza-card reveal d2">
+        <div class="alianza-logo">
+          <svg viewBox="0 0 360 80" xmlns="http://www.w3.org/2000/svg">
+            <text x="180" y="48" text-anchor="middle" font-family="'Arial Black',Impact,sans-serif"
+                  font-size="36" font-weight="900" letter-spacing="-1" fill="#1a1a1a">didier rincon s.</text>
+            <text x="180" y="68" text-anchor="middle" font-family="Raleway,Arial,sans-serif"
+                  font-size="11" font-weight="600" letter-spacing="9" fill="#c0392b">ARQUITECTOS</text>
+          </svg>
+        </div>
+        <div class="alianza-role">Diseño Arquitectónico</div>
+      </div>
+      <!-- Acción Fiduciaria -->
+      <div class="alianza-card reveal d3">
+        <div class="alianza-logo">
+          <svg viewBox="0 0 310 115" xmlns="http://www.w3.org/2000/svg">
+            <g stroke="#1a1a1a" stroke-width="1.3" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16,74 C10,68 8,60 12,53 C16,47 24,47 28,53"/>
+              <path d="M28,53 C32,56 40,60 48,62"/>
+              <path d="M28,53 C36,46 52,41 68,38 C84,35 100,33 114,30 C126,27 136,24 142,22"/>
+              <path d="M142,22 C146,19 152,18 156,22 C160,26 160,33 156,37 C152,41 146,41 143,37"/>
+              <path d="M152,18 C154,13 158,12 159,17"/>
+              <circle cx="153" cy="26" r="1.8" fill="#1a1a1a" stroke="none"/>
+              <path d="M156,37 C160,36 164,34 163,38 C162,42 157,43 154,41"/>
+              <path d="M154,41 C150,43 144,44 140,42"/>
+              <path d="M140,42 C134,46 126,50 120,54"/>
+              <path d="M120,54 C124,58 126,66 124,74 C122,80 117,83 114,79 C112,75 114,70 118,68"/>
+              <path d="M112,56 C114,62 114,70 112,77 C110,82 105,83 103,79 C101,75 104,70 108,68"/>
+              <path d="M48,62 C64,66 82,67 98,65 C108,63 114,60 118,56"/>
+              <path d="M48,62 C46,68 42,76 38,80 C34,84 30,83 30,78 C30,74 34,72 38,71"/>
+              <path d="M40,63 C38,70 36,77 34,81 C32,85 28,85 28,81 C28,77 32,74 36,73"/>
+              <path d="M36,73 C38,70 44,67 48,62"/>
+            </g>
+            <text x="44" y="101" font-family="'Arial Black',Raleway,sans-serif"
+                  font-size="30" font-weight="900" letter-spacing="1.5" fill="#1a1a1a">ACC</text>
+            <text x="118" y="101" font-family="'Arial Black',Raleway,sans-serif"
+                  font-size="30" font-weight="900" letter-spacing="1.5" fill="#b52b27">ION</text>
+            <text x="43" y="114" font-family="Raleway,Arial,sans-serif"
+                  font-size="11" font-weight="500" letter-spacing="4" fill="#444">FIDUCIARIA</text>
+            <g transform="translate(284,22)">
+              <ellipse cx="0" cy="0" rx="18" ry="16" stroke="#b52b27" stroke-width="1.2" fill="none"/>
+              <text x="0" y="6" text-anchor="middle" font-family="Raleway,sans-serif"
+                    font-size="13" font-weight="700" fill="#b52b27">25</text>
+              <text x="0" y="-4" text-anchor="middle" font-family="Raleway,sans-serif"
+                    font-size="4.5" font-weight="500" letter-spacing="0.8" fill="#b52b27">AÑOS</text>
+            </g>
+          </svg>
+        </div>
+        <div class="alianza-role">Fiducia y Seguridad Jurídica</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACTO -->
+  <section class="contacto section" id="contacto">
+    <p class="label reveal">Contáctenos</p>
+    <h2 class="h2 reveal d1">Comience<br/>su <em>historia</em><br/>aquí</h2>
+    <div class="divider reveal d2"></div>
+    <p class="body-text reveal d2">Nuestro equipo de asesores está disponible para acompañarle en cada paso. Agenda tu visita al showroom y descubre todo lo que Rio Maggiore tiene para ofrecerte.</p>
+    <div class="contact-items reveal d3">
+      <a href="https://wa.me/573102981285" target="_blank" class="contact-item">
+        <div class="contact-icon">
+          <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        </div>
+        <div>
+          <div class="c-label">WhatsApp</div>
+          <div class="c-value">+57 310 298 1285</div>
+        </div>
+      </a>
+      <a href="mailto:riomaggiore2023@gmail.com" class="contact-item">
+        <div class="contact-icon">
+          <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+        </div>
+        <div>
+          <div class="c-label">Email</div>
+          <div class="c-value">riomaggiore2023@gmail.com</div>
+        </div>
+      </a>
+      <a href="https://wa.me/573102981285" target="_blank" class="contact-item" style="border-color:rgba(37,211,102,0.15);background:rgba(37,211,102,0.04);">
+        <div class="contact-icon" style="border-color:rgba(37,211,102,0.25);">
+          <svg viewBox="0 0 24 24" style="fill:#25D366;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        </div>
+        <div>
+          <div class="c-label">Agendar Visita</div>
+          <div class="c-value whatsapp">Escribir por WhatsApp</div>
+        </div>
+      </a>
+    </div>
+    <div class="showroom reveal d4">
+      <p>Km 7 Vía La Tebaida<br/>Armenia, Quindío, Colombia</p>
+      <div class="hours">
+        <div class="hour-tag">Lun – Vie · 8:00am – 6:00pm</div>
+        <div class="hour-tag">Sáb – Dom · 9:00am – 5:00pm</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-logo">Rio Maggiore</div>
+    <div class="footer-sub">Residencial Club · Armenia, Quindío · Colombia</div>
+    <div class="footer-socials">
+      <a href="https://www.facebook.com" target="_blank" class="footer-social">Facebook</a>
+      <a href="https://www.instagram.com" target="_blank" class="footer-social">Instagram</a>
+      <a href="https://www.youtube.com" target="_blank" class="footer-social">YouTube</a>
+    </div>
+    <div class="footer-copy">© 2026 Rio Maggiore Residencial Club · Todos los derechos reservados</div>
+  </footer>
+
+  <!-- WHATSAPP -->
+  <a href="https://wa.me/573102981285" target="_blank" class="wa-btn" aria-label="WhatsApp">
+    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </a>
+
+  <script>
+    // Header scroll
+    const header = document.getElementById('header');
+    window.addEventListener('scroll', () => {
+      header.classList.toggle('scrolled', window.scrollY > 50);
+    }, { passive: true });
+
+    // Menu
+    const menuBtn = document.getElementById('menuBtn');
+    const navOverlay = document.getElementById('navOverlay');
+    menuBtn.addEventListener('click', () => {
+      menuBtn.classList.toggle('open');
+      navOverlay.classList.toggle('open');
+      document.body.style.overflow = navOverlay.classList.contains('open') ? 'hidden' : '';
+    });
+    function closeNav() {
+      menuBtn.classList.remove('open');
+      navOverlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    // Reveal on scroll
+    const revEls = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    revEls.forEach(el => obs.observe(el));
+  </script>
+</body>
+</html>

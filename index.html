@@ -1,0 +1,1571 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rio Maggiore — Proyecto Inmobiliario de Lujo · Armenia, Colombia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400&family=Raleway:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── TOKENS ──────────────────────────────────────────── */
+    :root {
+      --green-deep:    #0d1a0d;
+      --green-mid:     #162616;
+      --green-light:   #1e3a1e;
+      --gold:          #c9a96e;
+      --gold-light:    #e2c99a;
+      --gold-pale:     #f0e0c0;
+      --ivory:         #f5f0e6;
+      --ivory-dark:    #ede4d3;
+      --white:         #fdfcf9;
+      --text-dark:     #1a1a14;
+      --text-mid:      #4a4a3a;
+      --text-light:    #8a8470;
+
+      --serif:         'Playfair Display', Georgia, serif;
+      --serif-display: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+      --sans:          'Raleway', sans-serif;
+
+      --transition:    cubic-bezier(0.4, 0, 0.2, 1);
+      --ease-out:      cubic-bezier(0.0, 0.0, 0.2, 1);
+    }
+
+    /* ── RESET ───────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: var(--sans);
+      background: var(--green-deep);
+      color: var(--ivory);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+    /* ── GRAIN OVERLAY ───────────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.4;
+    }
+
+    /* ── HEADER ──────────────────────────────────────────── */
+    .header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 28px 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.5s var(--transition), padding 0.4s var(--transition), backdrop-filter 0.5s;
+    }
+    .header.scrolled {
+      background: rgba(13, 26, 13, 0.94);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      padding: 18px 60px;
+      border-bottom: 1px solid rgba(201, 169, 110, 0.12);
+    }
+    .header-logo {
+      display: flex;
+      align-items: center;
+    }
+    .header-logo svg {
+      height: 44px;
+      width: auto;
+      transition: height 0.4s var(--transition);
+    }
+    .header.scrolled .header-logo svg {
+      height: 36px;
+    }
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+    }
+    .header-nav a {
+      font-family: var(--sans);
+      font-size: 0.68rem;
+      font-weight: 400;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(245, 240, 230, 0.75);
+      transition: color 0.3s;
+      position: relative;
+    }
+    .header-nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -3px; left: 0;
+      width: 0; height: 1px;
+      background: var(--gold);
+      transition: width 0.35s var(--ease-out);
+    }
+    .header-nav a:hover { color: var(--gold-light); }
+    .header-nav a:hover::after { width: 100%; }
+    .header-cta {
+      font-family: var(--sans);
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--green-deep) !important;
+      background: var(--gold);
+      padding: 11px 26px;
+      border: 1px solid var(--gold);
+      transition: background 0.3s, color 0.3s !important;
+    }
+    .header-cta::after { display: none !important; }
+    .header-cta:hover {
+      background: transparent !important;
+      color: var(--gold) !important;
+    }
+
+    /* ── HERO ────────────────────────────────────────────── */
+    .hero {
+      position: relative;
+      height: 100vh;
+      min-height: 680px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      padding: 100px 0 80px;
+    }
+
+    /* CSS landscape — layers of mountains / foliage */
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        /* sky gradient */
+        linear-gradient(175deg, #060f06 0%, #0d1f10 35%, #142614 65%, #0a150a 100%);
+    }
+
+    /* Distant mountain range */
+    .hero-bg::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 55%;
+      background:
+        radial-gradient(ellipse 140% 60% at 20% 110%, #0f2a0f 0%, transparent 60%),
+        radial-gradient(ellipse 100% 50% at 70% 115%, #112211 0%, transparent 55%),
+        radial-gradient(ellipse 80% 40% at 50% 120%, #0a1a0a 0%, transparent 50%);
+    }
+
+    /* Gold horizon glow */
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      bottom: 6%; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, rgba(201,169,110,0.1) 20%, rgba(201,169,110,0.25) 50%, rgba(201,169,110,0.1) 80%, transparent 100%);
+      box-shadow: 0 0 40px 2px rgba(201,169,110,0.05);
+    }
+
+    .hero-stars {
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(1px 1px at 15% 12%, rgba(201,169,110,0.6) 0%, transparent 100%),
+        radial-gradient(1px 1px at 82% 8%, rgba(245,240,230,0.5) 0%, transparent 100%),
+        radial-gradient(1px 1px at 44% 18%, rgba(201,169,110,0.4) 0%, transparent 100%),
+        radial-gradient(1px 1px at 67% 22%, rgba(245,240,230,0.35) 0%, transparent 100%),
+        radial-gradient(1px 1px at 28% 28%, rgba(201,169,110,0.3) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 91% 15%, rgba(245,240,230,0.45) 0%, transparent 100%),
+        radial-gradient(1px 1px at 7% 35%, rgba(201,169,110,0.25) 0%, transparent 100%),
+        radial-gradient(1px 1px at 55% 10%, rgba(245,240,230,0.3) 0%, transparent 100%);
+    }
+
+    /* Foreground dark silhouette trees */
+    .hero-foliage {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 32%;
+      background:
+        radial-gradient(ellipse 25% 100% at 5% 100%, #06110610 0%, transparent 100%),
+        linear-gradient(to top, #060e06 0%, #0a160a 40%, transparent 100%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 0 24px;
+      max-width: 900px;
+    }
+
+    .hero-overline {
+      font-family: var(--sans);
+      font-size: 0.6rem;
+      font-weight: 400;
+      letter-spacing: 0.45em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 32px;
+      opacity: 0;
+      transform: translateY(12px);
+      animation: fadeUp 1s var(--ease-out) 0.4s forwards;
+    }
+
+    .hero-title {
+      font-family: var(--serif-display);
+      font-size: clamp(3.5rem, 8vw, 8rem);
+      font-weight: 300;
+      letter-spacing: 0.06em;
+      line-height: 0.92;
+      color: var(--ivory);
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 1.2s var(--ease-out) 0.6s forwards;
+    }
+    .hero-title em {
+      font-style: italic;
+      color: var(--gold-light);
+      font-weight: 300;
+    }
+
+    .hero-rule {
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      margin: 24px auto;
+      opacity: 0;
+      animation: fadeIn 1s var(--ease-out) 1s forwards;
+    }
+
+    .hero-tagline {
+      font-family: var(--serif-display);
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      font-weight: 300;
+      font-style: italic;
+      letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.9);
+      opacity: 0;
+      transform: translateY(12px);
+      animation: fadeUp 1s var(--ease-out) 1.2s forwards;
+    }
+
+    .hero-cta-group {
+      margin-top: 36px;
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+      opacity: 0;
+      transform: translateY(12px);
+      animation: fadeUp 1s var(--ease-out) 1.5s forwards;
+    }
+
+    .btn-primary {
+      font-family: var(--sans);
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      padding: 16px 40px;
+      background: var(--gold);
+      color: var(--green-deep);
+      border: 1px solid var(--gold);
+      cursor: pointer;
+      transition: background 0.35s, color 0.35s, transform 0.2s;
+    }
+    .btn-primary:hover {
+      background: transparent;
+      color: var(--gold-light);
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      font-family: var(--sans);
+      font-size: 0.65rem;
+      font-weight: 400;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      padding: 16px 40px;
+      background: transparent;
+      color: rgba(245,240,230,0.7);
+      border: 1px solid rgba(245,240,230,0.25);
+      cursor: pointer;
+      transition: border-color 0.35s, color 0.35s, transform 0.2s;
+    }
+    .btn-outline:hover {
+      border-color: var(--gold);
+      color: var(--gold-light);
+      transform: translateY(-1px);
+    }
+
+    /* Scroll indicator */
+    .scroll-indicator {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+      animation: fadeIn 1s var(--ease-out) 2s forwards;
+      cursor: pointer;
+    }
+    .scroll-indicator span {
+      font-family: var(--sans);
+      font-size: 0.5rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: rgba(245,240,230,0.4);
+    }
+    .scroll-line {
+      width: 1px;
+      height: 50px;
+      background: linear-gradient(to bottom, var(--gold) 0%, transparent 100%);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+
+    /* ── SECTION SHARED ──────────────────────────────────── */
+    .section {
+      padding: 120px 60px;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    .section-full {
+      padding: 120px 60px;
+      width: 100%;
+    }
+
+    .section-label {
+      font-family: var(--sans);
+      font-size: 0.58rem;
+      font-weight: 400;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .section-label::before {
+      content: '';
+      width: 30px;
+      height: 1px;
+      background: var(--gold);
+      flex-shrink: 0;
+    }
+
+    .section-title {
+      font-family: var(--serif-display);
+      font-size: clamp(2.4rem, 5vw, 4.2rem);
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--ivory);
+    }
+    .section-title em {
+      font-style: italic;
+      color: var(--gold-light);
+    }
+
+    .gold-divider {
+      width: 50px;
+      height: 1px;
+      background: linear-gradient(90deg, var(--gold), transparent);
+      margin: 32px 0;
+    }
+
+    /* Reveal animation */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+    .reveal-delay-5 { transition-delay: 0.5s; }
+    .reveal-delay-6 { transition-delay: 0.6s; }
+
+    /* ── EL PROYECTO ─────────────────────────────────────── */
+    .proyecto {
+      background: var(--green-deep);
+    }
+    .proyecto-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .proyecto-text p {
+      font-family: var(--sans);
+      font-size: 1.05rem;
+      font-weight: 300;
+      line-height: 1.9;
+      color: rgba(255,255,255,0.88);
+      margin-bottom: 20px;
+    }
+    .proyecto-text p:first-of-type::first-letter {
+      font-family: var(--serif-display);
+      font-size: 3.5rem;
+      font-weight: 300;
+      color: var(--gold);
+      float: left;
+      line-height: 0.8;
+      margin: 6px 12px 0 0;
+    }
+
+    .proyecto-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: rgba(201,169,110,0.08);
+      border: 1px solid rgba(201,169,110,0.08);
+    }
+    .stat-item {
+      padding: 36px 32px;
+      background: var(--green-deep);
+      transition: background 0.3s;
+    }
+    .stat-item:hover {
+      background: rgba(201,169,110,0.04);
+    }
+    .stat-num {
+      font-family: var(--serif-display);
+      font-size: 2.8rem;
+      font-weight: 300;
+      color: var(--gold-light);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .stat-label {
+      font-family: var(--sans);
+      font-size: 0.6rem;
+      font-weight: 400;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(245,240,230,0.4);
+    }
+
+    /* ── PRODUCTOS ───────────────────────────────────────── */
+    .productos {
+      background: linear-gradient(180deg, var(--green-deep) 0%, #0a1a0a 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .productos::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(201,169,110,0.2), transparent);
+    }
+    .productos-header {
+      text-align: center;
+      margin-bottom: 70px;
+    }
+    .productos-header .section-label {
+      justify-content: center;
+    }
+    .productos-header .section-label::before { display: none; }
+    .productos-header .section-label::after {
+      content: '';
+      width: 30px;
+      height: 1px;
+      background: var(--gold);
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: rgba(201,169,110,0.06);
+    }
+
+    .product-card {
+      background: #0d1a0d;
+      padding: 48px 36px;
+      position: relative;
+      overflow: hidden;
+      cursor: default;
+      transition: background 0.4s var(--transition);
+    }
+    .product-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      transform: scaleX(0);
+      transition: transform 0.5s var(--ease-out);
+      transform-origin: center;
+    }
+    .product-card:hover { background: #111f11; }
+    .product-card:hover::before { transform: scaleX(1); }
+
+    .product-icon {
+      width: 40px;
+      height: 40px;
+      margin-bottom: 28px;
+      position: relative;
+    }
+    /* Unique CSS icons for each product type */
+    .icon-casa::before {
+      content: '';
+      position: absolute;
+      top: 8px; left: 0;
+      width: 40px; height: 24px;
+      background: rgba(201,169,110,0.12);
+      border: 1px solid rgba(201,169,110,0.3);
+    }
+    .icon-casa::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 6px;
+      width: 0; height: 0;
+      border-left: 14px solid transparent;
+      border-right: 14px solid transparent;
+      border-bottom: 10px solid rgba(201,169,110,0.4);
+    }
+    .icon-villa::before {
+      content: '';
+      position: absolute;
+      top: 10px; left: 4px;
+      width: 32px; height: 20px;
+      background: rgba(201,169,110,0.08);
+      border: 1px solid rgba(201,169,110,0.25);
+      border-radius: 50% 50% 0 0;
+    }
+    .icon-villa::after {
+      content: '';
+      position: absolute;
+      top: 28px; left: 0;
+      width: 40px; height: 2px;
+      background: rgba(201,169,110,0.3);
+    }
+    .icon-town::before {
+      content: '';
+      position: absolute;
+      top: 4px; left: 2px;
+      width: 36px; height: 30px;
+      background: linear-gradient(135deg, rgba(201,169,110,0.15) 50%, transparent 50%);
+      border: 1px solid rgba(201,169,110,0.2);
+    }
+    .icon-town::after {
+      content: '';
+      position: absolute;
+      top: 15px; left: 2px;
+      width: 36px; height: 1px;
+      background: rgba(201,169,110,0.2);
+    }
+    .icon-plaza::before, .icon-mall::before, .icon-boulevar::before {
+      content: '';
+      position: absolute;
+      inset: 6px;
+      border: 1px solid rgba(201,169,110,0.25);
+      background: rgba(201,169,110,0.06);
+    }
+    .icon-plaza::after, .icon-mall::after, .icon-boulevar::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 10px; height: 10px;
+      background: rgba(201,169,110,0.3);
+    }
+
+    .product-num {
+      font-family: var(--serif-display);
+      font-size: 0.7rem;
+      color: rgba(201,169,110,0.3);
+      letter-spacing: 0.2em;
+      margin-bottom: 14px;
+    }
+    .product-name {
+      font-family: var(--serif-display);
+      font-size: 1.45rem;
+      font-weight: 400;
+      color: var(--ivory);
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .product-desc {
+      font-family: var(--sans);
+      font-size: 0.92rem;
+      font-weight: 300;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.85);
+    }
+    .product-arrow {
+      position: absolute;
+      bottom: 28px; right: 28px;
+      width: 28px; height: 28px;
+      border: 1px solid rgba(201,169,110,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(201,169,110,0.4);
+      font-size: 0.75rem;
+      transition: border-color 0.3s, color 0.3s, transform 0.3s;
+    }
+    .product-card:hover .product-arrow {
+      border-color: var(--gold);
+      color: var(--gold);
+      transform: translate(2px, -2px);
+    }
+
+    /* ── UBICACIÓN ───────────────────────────────────────── */
+    .ubicacion {
+      background: var(--green-deep);
+      border-top: 1px solid rgba(201,169,110,0.06);
+    }
+    .ubicacion-inner {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .ubicacion-details {
+      margin-top: 40px;
+    }
+    .location-item {
+      display: flex;
+      gap: 20px;
+      padding: 24px 0;
+      border-bottom: 1px solid rgba(201,169,110,0.08);
+    }
+    .location-item:first-child { border-top: 1px solid rgba(201,169,110,0.08); }
+    .location-dot {
+      width: 6px; height: 6px;
+      background: var(--gold);
+      border-radius: 50%;
+      margin-top: 6px;
+      flex-shrink: 0;
+    }
+    .location-item-title {
+      font-family: var(--sans);
+      font-size: 0.6rem;
+      font-weight: 500;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+    .location-item-text {
+      font-family: var(--sans);
+      font-size: 0.95rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.88);
+      line-height: 1.7;
+    }
+
+    /* Google Maps embed */
+    .map-container {
+      aspect-ratio: 1 / 0.75;
+      border: 1px solid rgba(201,169,110,0.12);
+      position: relative;
+      overflow: hidden;
+    }
+    .map-container iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+      filter: grayscale(20%) contrast(1.05);
+    }
+    .map-overlay-label {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 14px 20px;
+      background: linear-gradient(to top, rgba(13,26,13,0.9) 0%, transparent 100%);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      pointer-events: none;
+    }
+    .map-overlay-dot {
+      width: 8px; height: 8px;
+      background: var(--gold);
+      border-radius: 50%;
+      flex-shrink: 0;
+      box-shadow: 0 0 0 4px rgba(201,169,110,0.2);
+    }
+    .map-overlay-text {
+      font-family: var(--sans);
+      font-size: 0.65rem;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      color: var(--gold-light);
+      text-transform: uppercase;
+    }
+
+    /* ── CONTACTO ────────────────────────────────────────── */
+    .contacto {
+      background: linear-gradient(180deg, var(--green-deep) 0%, #060f06 100%);
+      border-top: 1px solid rgba(201,169,110,0.06);
+    }
+    .contacto-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+    }
+    .contacto-intro p {
+      font-family: var(--sans);
+      font-size: 1.0rem;
+      font-weight: 300;
+      line-height: 1.9;
+      color: rgba(255,255,255,0.88);
+      margin-top: 28px;
+    }
+
+    .contact-methods {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      margin-top: 40px;
+    }
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 22px 24px;
+      background: rgba(201,169,110,0.03);
+      border: 1px solid rgba(201,169,110,0.06);
+      transition: background 0.3s, border-color 0.3s;
+      cursor: pointer;
+    }
+    .contact-item:hover {
+      background: rgba(201,169,110,0.07);
+      border-color: rgba(201,169,110,0.15);
+    }
+    .contact-icon {
+      width: 36px; height: 36px;
+      border: 1px solid rgba(201,169,110,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .contact-icon svg {
+      width: 16px; height: 16px;
+      fill: var(--gold);
+      opacity: 0.7;
+    }
+    .contact-meta {}
+    .contact-meta-label {
+      font-family: var(--sans);
+      font-size: 0.55rem;
+      font-weight: 500;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 4px;
+    }
+    .contact-meta-value {
+      font-family: var(--serif-display);
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--ivory);
+    }
+
+    .showroom-box {
+      margin-top: 40px;
+      padding: 32px;
+      border: 1px solid rgba(201,169,110,0.1);
+      background: rgba(201,169,110,0.02);
+      position: relative;
+    }
+    .showroom-box::before {
+      content: 'SHOWROOM';
+      position: absolute;
+      top: -8px; left: 24px;
+      font-family: var(--sans);
+      font-size: 0.5rem;
+      letter-spacing: 0.35em;
+      color: var(--gold);
+      background: #060f06;
+      padding: 0 8px;
+    }
+    .showroom-box p {
+      font-family: var(--sans);
+      font-size: 0.95rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.88);
+      line-height: 1.8;
+    }
+    .showroom-hours {
+      margin-top: 20px;
+      display: flex;
+      gap: 16px;
+    }
+    .hour-badge {
+      padding: 8px 16px;
+      border: 1px solid rgba(201,169,110,0.15);
+      font-family: var(--sans);
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      color: rgba(245,240,230,0.4);
+    }
+
+    /* ── ALIANZAS ────────────────────────────────────────── */
+    .alianzas {
+      background: var(--ivory);
+      border-top: 1px solid rgba(201,169,110,0.15);
+    }
+    .alianzas .section-label { color: #6a8a6a; }
+    .alianzas .section-label::before { background: #6a8a6a; }
+    .alianzas .section-title { color: var(--text-dark); }
+    .alianzas .section-title em { color: #3a6e3a; }
+    .alianzas .gold-divider { background: linear-gradient(90deg, #3a6e3a, transparent); }
+    .alianzas-sub {
+      font-family: var(--sans);
+      font-size: 1.0rem;
+      font-weight: 300;
+      color: var(--text-mid);
+      line-height: 1.8;
+      margin-top: 16px;
+      max-width: 480px;
+    }
+    .alianzas-grid {
+      display: flex;
+      gap: 2px;
+      margin-top: 60px;
+      flex-wrap: wrap;
+    }
+    .alianza-card {
+      flex: 1;
+      min-width: 260px;
+      background: #fff;
+      border: 1px solid rgba(0,0,0,0.06);
+      padding: 48px 48px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      transition: box-shadow 0.35s, transform 0.35s;
+    }
+    .alianza-card:hover {
+      box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+      transform: translateY(-2px);
+    }
+    .alianza-logo-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 80px;
+    }
+    .alianza-logo-wrap svg {
+      max-width: 260px;
+      max-height: 80px;
+      width: 100%;
+      height: auto;
+    }
+    .alianza-role {
+      font-family: var(--sans);
+      font-size: 0.58rem;
+      font-weight: 500;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(60,80,60,0.45);
+      text-align: center;
+      border-top: 1px solid rgba(0,0,0,0.06);
+      padding-top: 20px;
+      width: 100%;
+    }
+
+    /* ── FOOTER ──────────────────────────────────────────── */
+    .footer {
+      background: #060e06;
+      padding: 60px;
+      border-top: 1px solid rgba(201,169,110,0.08);
+    }
+    .footer-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 40px;
+    }
+    .footer-logo {
+      font-family: var(--serif-display);
+      font-size: 1.2rem;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      color: var(--gold);
+    }
+    .footer-logo-sub {
+      font-family: var(--sans);
+      font-size: 0.5rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(201,169,110,0.4);
+      margin-top: 6px;
+    }
+    .footer-rule {
+      width: 1px;
+      height: 50px;
+      background: linear-gradient(to bottom, transparent, rgba(201,169,110,0.2), transparent);
+    }
+    .footer-socials {
+      display: flex;
+      gap: 20px;
+      justify-content: flex-end;
+      align-items: center;
+    }
+    .footer-social-link {
+      font-family: var(--sans);
+      font-size: 0.55rem;
+      font-weight: 400;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(245,240,230,0.35);
+      transition: color 0.3s;
+      padding: 8px 0;
+      position: relative;
+    }
+    .footer-social-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 1px;
+      background: var(--gold);
+      transition: width 0.3s;
+    }
+    .footer-social-link:hover { color: var(--gold-light); }
+    .footer-social-link:hover::after { width: 100%; }
+
+    .footer-copy {
+      max-width: 1280px;
+      margin: 40px auto 0;
+      padding-top: 28px;
+      border-top: 1px solid rgba(201,169,110,0.06);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-copy p {
+      font-family: var(--sans);
+      font-size: 0.58rem;
+      letter-spacing: 0.15em;
+      color: rgba(245,240,230,0.2);
+    }
+
+    /* ── WHATSAPP FLOAT ──────────────────────────────────── */
+    .whatsapp-btn {
+      position: fixed;
+      bottom: 36px; right: 36px;
+      z-index: 200;
+      width: 56px; height: 56px;
+      background: #25D366;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px rgba(37,211,102,0.3), 0 2px 8px rgba(0,0,0,0.3);
+      transition: transform 0.3s var(--transition), box-shadow 0.3s;
+      cursor: pointer;
+    }
+    .whatsapp-btn:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 8px 28px rgba(37,211,102,0.4), 0 4px 12px rgba(0,0,0,0.3);
+    }
+    .whatsapp-btn svg {
+      width: 26px; height: 26px;
+      fill: #fff;
+    }
+    .whatsapp-tooltip {
+      position: absolute;
+      right: 68px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(13,26,13,0.95);
+      border: 1px solid rgba(201,169,110,0.2);
+      color: var(--ivory);
+      font-family: var(--sans);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      white-space: nowrap;
+      padding: 8px 14px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .whatsapp-btn:hover .whatsapp-tooltip { opacity: 1; }
+
+    /* ── KEYFRAMES ───────────────────────────────────────── */
+    @keyframes fadeUp {
+      to { opacity: 1; transform: none; }
+    }
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.4; transform: scaleY(1); }
+      50% { opacity: 1; transform: scaleY(1.2); }
+    }
+    /* ── RESPONSIVE ──────────────────────────────────────── */
+
+    /* Tablet */
+    @media (max-width: 1024px) {
+      .section { padding: 90px 40px; }
+      .section-full { padding: 90px 40px; }
+      .header { padding: 22px 40px; }
+      .header.scrolled { padding: 14px 40px; }
+      .proyecto-inner { grid-template-columns: 1fr; gap: 50px; }
+      .products-grid { grid-template-columns: repeat(2, 1fr); }
+      .ubicacion-inner { grid-template-columns: 1fr; }
+      .contacto-inner { grid-template-columns: 1fr; }
+      .alianzas-grid { flex-direction: column; }
+    }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      /* Layout */
+      .section { padding: 70px 20px; }
+      .section-full { padding: 70px 20px; }
+
+      /* Header */
+      .header { padding: 16px 20px; }
+      .header.scrolled { padding: 12px 20px; }
+      .header-logo svg { height: 34px; }
+      .header.scrolled .header-logo svg { height: 28px; }
+      .header-nav { display: none; }
+      .header-nav.open {
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        inset: 0;
+        background: rgba(10,18,10,0.98);
+        align-items: center;
+        justify-content: center;
+        gap: 36px;
+        z-index: 99;
+      }
+      .header-nav.open a {
+        font-size: 1.1rem;
+        letter-spacing: 0.2em;
+        color: rgba(255,255,255,0.85);
+      }
+      .header-nav.open .header-cta {
+        color: var(--green-deep) !important;
+        background: var(--gold);
+        padding: 14px 32px;
+        font-size: 0.75rem;
+      }
+      .menu-toggle { display: flex !important; }
+
+      /* Hero */
+      .hero { min-height: 100svh; }
+      .hero-content { padding: 0 20px; }
+      .hero-overline { font-size: 0.55rem; letter-spacing: 0.35em; margin-bottom: 20px; }
+      .hero-rule { margin: 24px auto; }
+      .hero-tagline { font-size: 1.05rem; }
+      .hero-cta-group {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        margin-top: 36px;
+      }
+      .btn-primary, .btn-outline {
+        width: 100%;
+        max-width: 280px;
+        text-align: center;
+        padding: 15px 24px;
+      }
+      .scroll-indicator { bottom: 24px; }
+
+      /* Section labels & titles */
+      .section-label { font-size: 0.55rem; letter-spacing: 0.3em; }
+      .gold-divider { margin: 24px 0; }
+
+      /* El Proyecto */
+      .proyecto-inner { gap: 36px; }
+      .proyecto-stats { grid-template-columns: 1fr 1fr; gap: 1px; }
+      .stat-item { padding: 24px 20px; }
+      .stat-num { font-size: 2.2rem; }
+      .stat-label { font-size: 0.55rem; }
+      .proyecto-text p { font-size: 0.98rem; }
+
+      /* Productos */
+      .products-grid { grid-template-columns: 1fr; }
+      .product-card { padding: 36px 28px; }
+      .product-name { font-size: 1.3rem; }
+      .product-desc { font-size: 0.9rem; }
+
+      /* Ubicación */
+      .ubicacion-inner { gap: 36px; }
+      .map-container { aspect-ratio: 1 / 0.85; }
+      .location-item { padding: 20px 0; }
+      .location-item-text { font-size: 0.92rem; }
+
+      /* Alianzas */
+      .alianzas-grid { flex-direction: column; gap: 2px; }
+      .alianza-card { padding: 36px 28px; min-width: unset; }
+      .alianza-logo-wrap { height: 60px; }
+      .alianza-logo-wrap svg { max-height: 60px; }
+
+      /* Contacto */
+      .contacto-inner { gap: 40px; }
+      .contacto-intro p { font-size: 0.98rem; }
+      .contact-item { padding: 18px 18px; gap: 14px; }
+      .contact-meta-value { font-size: 0.92rem; }
+      .showroom-box { padding: 24px 20px; }
+      .showroom-box p { font-size: 0.9rem; }
+      .showroom-hours { flex-direction: column; gap: 8px; }
+      .hour-badge { text-align: center; padding: 10px 16px; font-size: 0.62rem; }
+
+      /* Footer */
+      .footer { padding: 40px 20px; }
+      .footer-inner { grid-template-columns: 1fr; text-align: center; gap: 20px; }
+      .footer-rule { display: none; }
+      .footer-socials { justify-content: center; flex-wrap: wrap; gap: 16px; }
+      .footer-copy { flex-direction: column; gap: 6px; text-align: center; }
+
+      /* WhatsApp */
+      .whatsapp-btn { bottom: 20px; right: 20px; width: 50px; height: 50px; }
+      .whatsapp-btn svg { width: 22px; height: 22px; }
+      .whatsapp-tooltip { display: none; }
+    }
+
+    /* Small phones */
+    @media (max-width: 400px) {
+      .section { padding: 60px 16px; }
+      .section-full { padding: 60px 16px; }
+      .hero-title { letter-spacing: 0.03em; }
+      .stat-num { font-size: 1.9rem; }
+      .product-card { padding: 28px 20px; }
+      .alianza-card { padding: 28px 20px; }
+      .footer { padding: 32px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header" id="header">
+    <a href="#inicio" class="header-logo">
+      <!-- Rio Maggiore logo — light version for dark header -->
+      <svg viewBox="0 0 240 58" xmlns="http://www.w3.org/2000/svg" aria-label="Rio Maggiore Residencial Club">
+        <!-- Wave 1: lighter green -->
+        <path d="M8,16 C34,4 66,26 100,14 C134,2 168,22 200,12 C210,9 218,11 228,14"
+              stroke="#7abf8a" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+        <!-- Wave 2: deeper green -->
+        <path d="M8,26 C34,14 66,36 100,24 C134,12 168,32 200,22 C210,19 218,21 228,24"
+              stroke="#3d8f52" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+        <!-- Main name -->
+        <text x="118" y="43" text-anchor="middle" font-family="Raleway,sans-serif"
+              font-size="15" font-weight="700" letter-spacing="4.5" fill="#ffffff">RIO MAGGIORE</text>
+        <!-- Subtitle -->
+        <text x="118" y="55" text-anchor="middle" font-family="Raleway,sans-serif"
+              font-size="6.5" font-weight="400" letter-spacing="5.5" fill="rgba(255,255,255,0.65)">RESIDENCIAL CLUB</text>
+      </svg>
+    </a>
+    <nav class="header-nav" id="nav">
+      <a href="#proyecto">El Proyecto</a>
+      <a href="#productos">Productos</a>
+      <a href="#ubicacion">Ubicación</a>
+      <a href="#alianzas">Alianzas</a>
+      <a href="#contacto" class="header-cta">Contáctenos</a>
+    </nav>
+    <button class="menu-toggle" id="menuToggle" aria-label="Menú" style="display:none;background:none;border:none;cursor:pointer;padding:4px;">
+      <svg width="24" height="16" viewBox="0 0 24 16" fill="none">
+        <rect y="0" width="24" height="1.5" fill="rgba(201,169,110,0.8)"/>
+        <rect y="7" width="18" height="1.5" fill="rgba(201,169,110,0.8)"/>
+        <rect y="14" width="24" height="1.5" fill="rgba(201,169,110,0.8)"/>
+      </svg>
+    </button>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" id="inicio">
+    <div class="hero-bg"></div>
+    <div class="hero-stars"></div>
+    <div class="hero-foliage"></div>
+    <div class="hero-content">
+      <p class="hero-overline">Armenia · Quindío · Colombia</p>
+      <h1 class="hero-title">Rio<br/><em>Maggiore</em></h1>
+      <div class="hero-rule"></div>
+      <p class="hero-tagline">Donde el lujo encuentra la naturaleza</p>
+      <div class="hero-cta-group">
+        <a href="#productos" class="btn-primary">Descubrir el Proyecto</a>
+        <a href="#contacto" class="btn-outline">Agendar Visita</a>
+      </div>
+    </div>
+    <div class="scroll-indicator" onclick="document.getElementById('proyecto').scrollIntoView({behavior:'smooth'})">
+      <span>Explorar</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- EL PROYECTO -->
+  <section class="proyecto" id="proyecto">
+    <div class="section">
+      <div class="proyecto-inner">
+        <div class="proyecto-text">
+          <p class="section-label reveal">Sobre Nosotros</p>
+          <h2 class="section-title reveal reveal-delay-1">Un destino<br/><em>excepcional</em></h2>
+          <div class="gold-divider reveal reveal-delay-2"></div>
+          <p class="reveal reveal-delay-2">Rio Maggiore es un desarrollo inmobiliario de uso mixto concebido para quienes exigen lo mejor. Ubicado en el corazón del Eje Cafetero, ofrece una experiencia de vida sin precedentes donde la arquitectura de lujo dialoga con los paisajes naturales del Quindío.</p>
+          <p class="reveal reveal-delay-3">Un ecosistema completo que integra residencias exclusivas, villas turísticas, espacios comerciales y de entretenimiento, todo diseñado bajo los más altos estándares internacionales de calidad y sostenibilidad.</p>
+          <div class="reveal reveal-delay-4" style="margin-top:32px;">
+            <a href="#contacto" class="btn-primary">Solicitar Información</a>
+          </div>
+        </div>
+        <div class="proyecto-stats reveal reveal-delay-2">
+          <div class="stat-item">
+            <div class="stat-num">6</div>
+            <div class="stat-label">Tipos de Producto</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">Km 7</div>
+            <div class="stat-label">Vía La Tebaida</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">5</div>
+            <div class="stat-label">Min al Aeropuerto</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">100%</div>
+            <div class="stat-label">All Inclusive</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCTOS -->
+  <section class="productos" id="productos">
+    <div class="section-full" style="max-width:1280px;margin:0 auto;">
+      <div class="productos-header">
+        <p class="section-label reveal">Portafolio Inmobiliario</p>
+        <h2 class="section-title reveal reveal-delay-1">Nuestros<br/><em>Productos</em></h2>
+        <div class="gold-divider reveal reveal-delay-2" style="margin:28px auto;"></div>
+        <p class="reveal reveal-delay-2" style="font-family:var(--sans);font-size:1.0rem;font-weight:300;color:rgba(255,255,255,0.88);max-width:480px;margin:0 auto;line-height:1.9;">Seis tipologías únicas diseñadas para satisfacer distintos estilos de vida e inversión dentro de un mismo desarrollo de clase mundial.</p>
+      </div>
+      <div class="products-grid">
+        <div class="product-card reveal">
+          <div class="product-icon icon-casa"></div>
+          <div class="product-num">01</div>
+          <h3 class="product-name">Casas<br/>Campestres</h3>
+          <p class="product-desc">Residencias privadas que integran arquitectura contemporánea con el entorno natural. Espacios amplios, jardines exclusivos y los más altos estándares de confort.</p>
+          <div class="product-arrow">→</div>
+        </div>
+        <div class="product-card reveal reveal-delay-1">
+          <div class="product-icon icon-villa"></div>
+          <div class="product-num">02</div>
+          <h3 class="product-name">Villas Turísticas<br/>de Lujo</h3>
+          <p class="product-desc">Propiedades de inversión turística con retorno garantizado. Diseñadas para brindar una experiencia de hospedaje cinco estrellas en el corazón del Quindío.</p>
+          <div class="product-arrow">→</div>
+        </div>
+        <div class="product-card reveal reveal-delay-2">
+          <div class="product-icon icon-town"></div>
+          <div class="product-num">03</div>
+          <h3 class="product-name">Townhouse</h3>
+          <p class="product-desc">Unidades adosadas de diseño exclusivo que combinan la privacidad de una casa con los beneficios de una comunidad cerrada y servicios compartidos de alto nivel.</p>
+          <div class="product-arrow">→</div>
+        </div>
+        <div class="product-card reveal reveal-delay-3">
+          <div class="product-icon icon-plaza"></div>
+          <div class="product-num">04</div>
+          <h3 class="product-name">Plaza<br/>Riviera</h3>
+          <p class="product-desc">Un espacio de confluencia social y comercial de primer nivel. Gastronomía selecta, boutiques y servicios premium en un ambiente diseñado para el encuentro.</p>
+          <div class="product-arrow">→</div>
+        </div>
+        <div class="product-card reveal reveal-delay-4">
+          <div class="product-icon icon-mall"></div>
+          <div class="product-num">05</div>
+          <h3 class="product-name">Riviera<br/>Mall</h3>
+          <p class="product-desc">Centro comercial de nueva generación con marcas nacionales e internacionales. Entretenimiento, moda y servicios en un solo espacio de diseño arquitectónico distinguido.</p>
+          <div class="product-arrow">→</div>
+        </div>
+        <div class="product-card reveal reveal-delay-5">
+          <div class="product-icon icon-boulevar"></div>
+          <div class="product-num">06</div>
+          <h3 class="product-name">Plaza<br/>Boulevar</h3>
+          <p class="product-desc">Locales comerciales de alta visibilidad en el bulevar principal del proyecto. Una oportunidad de inversión estratégica en el nuevo polo de desarrollo del Quindío.</p>
+          <div class="product-arrow">→</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- UBICACIÓN -->
+  <section class="ubicacion" id="ubicacion">
+    <div class="section">
+      <div class="ubicacion-inner">
+        <div>
+          <p class="section-label reveal">Localización</p>
+          <h2 class="section-title reveal reveal-delay-1">Ubicación<br/><em>Privilegiada</em></h2>
+          <div class="gold-divider reveal reveal-delay-2"></div>
+          <p class="reveal reveal-delay-2" style="font-family:var(--sans);font-size:1.0rem;font-weight:300;color:rgba(255,255,255,0.88);line-height:1.9;">Estratégicamente situado en uno de los corredores de mayor crecimiento y valorización del departamento del Quindío, con acceso inmediato a los principales centros urbanos de la región.</p>
+          <div class="ubicacion-details reveal reveal-delay-3">
+            <div class="location-item">
+              <div class="location-dot"></div>
+              <div>
+                <div class="location-item-title">Dirección</div>
+                <div class="location-item-text">Km 7 Vía La Tebaida<br/>Armenia, Quindío, Colombia</div>
+              </div>
+            </div>
+            <div class="location-item">
+              <div class="location-dot"></div>
+              <div>
+                <div class="location-item-title">Aeropuerto Internacional El Edén</div>
+                <div class="location-item-text">A tan solo 5 minutos del proyecto — conectividad directa con las principales ciudades del país y vuelos internacionales.</div>
+              </div>
+            </div>
+            <div class="location-item">
+              <div class="location-dot"></div>
+              <div>
+                <div class="location-item-title">Conectividad Regional</div>
+                <div class="location-item-text">Acceso rápido a Pereira, Manizales, Ibagué y el resto del Eje Cafetero. En el corazón del Triángulo del Café.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="map-container reveal reveal-delay-2">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3975.234!2d-75.7753497!3d4.467184!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e38596c63fe12a9%3A0x5194251ce9bfa2d2!2sRio%20Maggiore%2C%20La%20Tebaida-Armenia%20%23Km%207%2C%20El%20Eden%2C%20Armenia%2C%20Quind%C3%ADo!5e0!3m2!1ses!2sco!4v1713600000000!5m2!1ses!2sco"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Ubicación Rio Maggiore — Km 7 Vía La Tebaida, Armenia">
+          </iframe>
+          <div class="map-overlay-label">
+            <div class="map-overlay-dot"></div>
+            <span class="map-overlay-text">Km 7 · Vía La Tebaida · Armenia, Quindío</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACTO -->
+  <section class="contacto" id="contacto">
+    <div class="section">
+      <div class="contacto-inner">
+        <div class="contacto-intro">
+          <p class="section-label reveal">Contáctenos</p>
+          <h2 class="section-title reveal reveal-delay-1">Comience<br/>su <em>historia</em><br/>aquí</h2>
+          <div class="gold-divider reveal reveal-delay-2"></div>
+          <p class="reveal reveal-delay-2">Nuestro equipo de asesores comerciales está disponible para acompañarle en cada paso del proceso de adquisición. Agenda una visita a nuestro showroom y descubra en persona todo lo que Rio Maggiore tiene para ofrecerle.</p>
+          <div class="showroom-box reveal reveal-delay-3">
+            <p>Showroom de Ventas — Km 7 Vía La Tebaida<br/>Armenia, Quindío, Colombia</p>
+            <div class="showroom-hours">
+              <div class="hour-badge">Lun – Vie · 8am – 6pm</div>
+              <div class="hour-badge">Sáb – Dom · 9am – 5pm</div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="contact-methods reveal reveal-delay-1">
+            <a href="https://wa.me/573102981285" target="_blank" class="contact-item">
+              <div class="contact-icon">
+                <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              </div>
+              <div class="contact-meta">
+                <div class="contact-meta-label">WhatsApp</div>
+                <div class="contact-meta-value">+57 310 298 1285</div>
+              </div>
+            </a>
+            <a href="mailto:riomaggiore2023@gmail.com" class="contact-item">
+              <div class="contact-icon">
+                <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+              </div>
+              <div class="contact-meta">
+                <div class="contact-meta-label">Correo Electrónico</div>
+                <div class="contact-meta-value">riomaggiore2023@gmail.com</div>
+              </div>
+            </a>
+            <a href="https://wa.me/573102981285" target="_blank" class="contact-item" style="background:rgba(37,211,102,0.04);border-color:rgba(37,211,102,0.12);">
+              <div class="contact-icon" style="border-color:rgba(37,211,102,0.2);">
+                <svg viewBox="0 0 24 24" style="fill:#25D366;opacity:1;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              </div>
+              <div class="contact-meta">
+                <div class="contact-meta-label">Agenda una Visita</div>
+                <div class="contact-meta-value" style="color:#25D366;">Escribir por WhatsApp</div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ALIANZAS -->
+  <section class="alianzas" id="alianzas">
+    <div class="section">
+      <p class="section-label reveal">Respaldo y Confianza</p>
+      <h2 class="section-title reveal reveal-delay-1">Nuestras<br/><em>Alianzas</em></h2>
+      <div class="gold-divider reveal reveal-delay-2"></div>
+      <p class="alianzas-sub reveal reveal-delay-2">Rio Maggiore cuenta con el respaldo de aliados estratégicos líderes en sus sectores, garantizando los más altos estándares de diseño, construcción y seguridad jurídica.</p>
+      <div class="alianzas-grid">
+
+        <!-- Didier Rincon S. Arquitectos -->
+        <div class="alianza-card reveal reveal-delay-2">
+          <div class="alianza-logo-wrap">
+            <svg viewBox="0 0 360 80" xmlns="http://www.w3.org/2000/svg" aria-label="Didier Rincon S. Arquitectos">
+              <!-- "didier rincon s." - geometric bold -->
+              <text x="180" y="48" text-anchor="middle"
+                    font-family="'Arial Black',Impact,sans-serif"
+                    font-size="36" font-weight="900" letter-spacing="-1"
+                    fill="#1a1a1a">didier rincon s.</text>
+              <!-- "ARQUITECTOS" in red spaced -->
+              <text x="180" y="68" text-anchor="middle"
+                    font-family="Raleway,'Arial',sans-serif"
+                    font-size="11" font-weight="600" letter-spacing="9"
+                    fill="#c0392b">ARQUITECTOS</text>
+            </svg>
+          </div>
+          <div class="alianza-role">Diseño Arquitectónico</div>
+        </div>
+
+        <!-- Acción Fiduciaria -->
+        <div class="alianza-card reveal reveal-delay-3">
+          <div class="alianza-logo-wrap">
+            <svg viewBox="0 0 310 115" xmlns="http://www.w3.org/2000/svg" aria-label="Acción Fiduciaria">
+
+              <!-- PANTHER — thin outline, running right -->
+              <g stroke="#1a1a1a" stroke-width="1.3" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <!-- Tail (left, curves upward) -->
+                <path d="M16,74 C10,68 8,60 12,53 C16,47 24,47 28,53"/>
+                <!-- Back haunch / rump -->
+                <path d="M28,53 C32,56 40,60 48,62"/>
+                <!-- Spine / upper back -->
+                <path d="M28,53 C36,46 52,41 68,38 C84,35 100,33 114,30 C126,27 136,24 142,22"/>
+                <!-- Neck to head -->
+                <path d="M142,22 C146,19 152,18 156,22 C160,26 160,33 156,37 C152,41 146,41 143,37"/>
+                <!-- Ear -->
+                <path d="M152,18 C154,13 158,12 159,17"/>
+                <!-- Eye -->
+                <circle cx="153" cy="26" r="1.8" fill="#1a1a1a" stroke="none"/>
+                <!-- Muzzle / nose -->
+                <path d="M156,37 C160,36 164,34 163,38 C162,42 157,43 154,41"/>
+                <!-- Chin line back to throat -->
+                <path d="M154,41 C150,43 144,44 140,42"/>
+                <!-- Chest / front shoulder -->
+                <path d="M140,42 C134,46 126,50 120,54"/>
+                <!-- Front right leg (leading, extended) -->
+                <path d="M120,54 C124,58 126,66 124,74 C122,80 117,83 114,79 C112,75 114,70 118,68"/>
+                <!-- Front left leg (slightly behind) -->
+                <path d="M112,56 C114,62 114,70 112,77 C110,82 105,83 103,79 C101,75 104,70 108,68"/>
+                <!-- Belly -->
+                <path d="M48,62 C64,66 82,67 98,65 C108,63 114,60 118,56"/>
+                <!-- Back right leg -->
+                <path d="M48,62 C46,68 42,76 38,80 C34,84 30,83 30,78 C30,74 34,72 38,71"/>
+                <!-- Back left leg -->
+                <path d="M40,63 C38,70 36,77 34,81 C32,85 28,85 28,81 C28,77 32,74 36,73"/>
+                <!-- Belly-haunch connector -->
+                <path d="M36,73 C38,70 44,67 48,62"/>
+              </g>
+
+              <!-- "ACC" — black -->
+              <text x="44" y="101"
+                    font-family="'Arial Black',Raleway,sans-serif"
+                    font-size="30" font-weight="900" letter-spacing="1.5"
+                    fill="#1a1a1a">ACC</text>
+              <!-- "ION" — dark red -->
+              <text x="118" y="101"
+                    font-family="'Arial Black',Raleway,sans-serif"
+                    font-size="30" font-weight="900" letter-spacing="1.5"
+                    fill="#b52b27">ION</text>
+              <!-- "FIDUCIARIA" -->
+              <text x="43" y="114"
+                    font-family="Raleway,Arial,sans-serif"
+                    font-size="11" font-weight="500" letter-spacing="4"
+                    fill="#444">FIDUCIARIA</text>
+
+              <!-- 25 años badge (top right) -->
+              <g transform="translate(284,22)">
+                <ellipse cx="0" cy="0" rx="18" ry="16" stroke="#b52b27" stroke-width="1.2" fill="none"/>
+                <text x="0" y="6" text-anchor="middle"
+                      font-family="Raleway,sans-serif" font-size="13" font-weight="700"
+                      fill="#b52b27">25</text>
+                <text x="0" y="-4" text-anchor="middle"
+                      font-family="Raleway,sans-serif" font-size="4.5" font-weight="500"
+                      letter-spacing="0.8" fill="#b52b27">AÑOS</text>
+              </g>
+
+            </svg>
+          </div>
+          <div class="alianza-role">Fiducia y Seguridad Jurídica</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-logo">Rio Maggiore</div>
+        <div class="footer-logo-sub">Residencial Club · Armenia, Quindío · Colombia</div>
+      </div>
+      <div class="footer-rule"></div>
+      <div class="footer-socials">
+        <a href="https://www.facebook.com" target="_blank" class="footer-social-link">Facebook</a>
+        <a href="https://www.instagram.com" target="_blank" class="footer-social-link">Instagram</a>
+        <a href="https://www.youtube.com" target="_blank" class="footer-social-link">YouTube</a>
+      </div>
+    </div>
+    <div class="footer-copy">
+      <p>© 2026 Rio Maggiore Residencial Club · Todos los derechos reservados</p>
+      <p>Armenia · Quindío · Colombia</p>
+    </div>
+  </footer>
+
+  <!-- WHATSAPP FLOAT -->
+  <a href="https://wa.me/573102981285" target="_blank" class="whatsapp-btn" aria-label="Contactar por WhatsApp">
+    <div class="whatsapp-tooltip">Contáctanos</div>
+    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </a>
+
+  <script>
+    // ── Header scroll ──────────────────────────────────────
+    const header = document.getElementById('header');
+    window.addEventListener('scroll', () => {
+      header.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+    // ── Mobile menu ────────────────────────────────────────
+    const menuToggle = document.getElementById('menuToggle');
+    const nav = document.getElementById('nav');
+    function checkMobile() {
+      menuToggle.style.display = window.innerWidth <= 768 ? 'flex' : 'none';
+    }
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    menuToggle.addEventListener('click', () => nav.classList.toggle('open'));
+    nav.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => nav.classList.remove('open'));
+    });
+
+    // ── Intersection Observer reveal ───────────────────────
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
